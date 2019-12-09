@@ -1,0 +1,176 @@
+@import '../../node_modules/reset-css/reset.css';
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Fredoka+One&display=swap');
+
+body {
+    font-family: 'Fira Sans', sans-serif;
+    color: #4f4f4f;
+    font-size: 15px;
+    font-weight: medium;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+}
+
+.header,
+.footer {
+    background-color: #ff8353;
+    color: #fff;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-text {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+}
+
+.logo {
+    display: block;
+    width: 54px;
+    height: 39px;
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+}
+
+.map-content {
+    flex-grow: 10;
+}
+.map-container {
+    position: relative;
+    height: 100%;
+}
+.map-logo {
+    position: absolute;
+    right: 0px;
+    bottom: 5px;
+}
+
+.card {
+    width: 380px;
+    background-color: #fff;
+    border-radius: 15px;
+    position: absolute;
+}
+
+.card-header {
+    height: 15px;
+    background-color: #ff8353;
+    color: #fff;
+    display: flex;
+    padding: 15px;
+    border-radius: 15px 15px 0 0;
+    justify-content: space-between;
+}
+.card-container {
+    padding: 22px 15px;
+}
+.card-reviews {
+    position: relative;
+    max-height: 150px;
+    overflow: auto;
+}
+.card-one-review {
+    margin-bottom: 30px;
+}
+
+.card-one-review:last-child {
+    margin-bottom: 0px;
+}
+.review-head {
+    margin-bottom: 12px;
+}
+
+.review-head span {
+    margin-right: 10px;
+}
+
+.review-head span:last-child {
+    margin-right: 0px;
+}
+
+.review-name {
+    font-weight: bold;
+}
+
+.review-place,
+.review-time {
+    opacity: 0.75;
+}
+
+.add-review-header {
+    color: #ff8353;
+    text-transform: uppercase;
+    padding: 15px 0px;
+    border-top: solid 1px #f0f0f0;
+}
+
+.card-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-form input,
+.card-form textarea {
+    display: block;
+    border: 1px solid #c4c4c4;
+    border-radius: 20px;
+    padding: 10px 15px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+.card-form textarea {
+    font-family: 'Fira Sans', sans-serif;
+    resize: none;
+}
+
+.card-form button {
+    background-color: #ff8353;
+    border-radius: 10px;
+    padding: 10px 17px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    align-self: flex-end;
+}
+
+.scroll-reviews {
+    width: 3px;
+    height: 70px;
+    background-color: #c4c4c4;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.map-container {
+    background-color: #c3c3c3;
+}
+
+#map {
+    height: 100%;
+}
+
+.ymaps-2-1-75-balloon__content {
+    margin-right: 0 !important;
+    padding: 0 !important;
+}
+
+#close-balloon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
