@@ -10,6 +10,8 @@ function layoutTemplate() {
     </div>
     <div class="card-container">
         <div class="card-reviews">
+        
+        <div id="default-text">No reviews</div>
         {% for review in properties.reviews %}
             <div class="card-one-review">
                 <p class="review-head">
@@ -20,7 +22,6 @@ function layoutTemplate() {
                 <p class="review-body">{{review.text}}</p>
             </div>
             {% endfor %}
-            <div class="scroll-reviews"></div>
         </div>
         <form id="form-review" class="card-form">
             <h3 class="add-review-header">

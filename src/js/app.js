@@ -12,6 +12,8 @@ ymaps.ready(function() {
         controls: ['zoomControl']
     });
 
+    let balloon;
+
     // Create Custom Ballon
     const BalloonContentLayout = ymaps.templateLayoutFactory.createClass(
         layoutTemplate(),
@@ -32,16 +34,18 @@ ymaps.ready(function() {
             },
             // Define a position of balloon
             applyElementOffset: function() {
-                this._element.style.left =
-                    -(this._element.offsetWidth / 2) + 'px';
+                this._element.style.left = 20 + 'px';
                 this._element.style.top =
-                    -(this._element.offsetHeight / 2) + 'px';
+                    -(this._element.offsetHeight / 2) - 50 + 'px';
             },
             // Clear all events after ballooon closed
             clear() {
                 this._element
                     .querySelector('#close-balloon')
-                    .removeEventListener('click', this.onCloseClick.bind(this));
+                    .removeEventListener('click', this.onCloseClick);
+                this._element
+                    .querySelector('#add-review')
+                    .removeEventListener('click', this.addReview);
                 BalloonContentLayout.superclass.clear.call(this);
             },
             // Close balloon
@@ -54,12 +58,19 @@ ymaps.ready(function() {
             addReview: function(e) {
                 e.preventDefault();
                 const form = this._element.querySelector('#form-review');
-                //const currentCoords = this._data.geoObject.geometry._coordinates;
+                const currentCoords = this.getData().coords;
+                const title = this._element.querySelector('#address');
+                let newPoint = null;
 
                 if (validation(form)) {
-                    const newReview = createReviewObject(currentCoords, form);
+                    const newReview = createReviewObject(form, title);
                     addReviewToPage.call(this, newReview);
                     clearForm(form);
+                    newPoint = new ymaps.Placemark(currentCoords, {
+                        place: title.textContent,
+                        reviews: newReview
+                    });
+                    mainMap.geoObjects.add(newPoint);
                 }
             }
         }
@@ -68,27 +79,31 @@ ymaps.ready(function() {
     mainMap.options.set({
         balloonLayout: BalloonContentLayout
     });
-
+    //  Open balloon on user's click
     mainMap.events.add('click', e => {
+        if (balloon) {
+            balloon.close();
+        }
+
         const coords = e.get('coords');
         const geoCoder = ymaps.geocode(coords);
+
         geoCoder.then(res => {
             const address = res.geoObjects.get(0).properties._data.text;
-            const balloon = new ymaps.Balloon(mainMap);
+            balloon = new ymaps.Balloon(mainMap);
             balloon.options.setParent(mainMap.options);
-
-            balloon.open(coords, { place: address });
-            //mainMap.balloon.open(coords, { balloonContentLayout: BalloonContentLayout } );
+            balloon.setData({ properties: { place: address }, coords: coords });
+            balloon.open(coords);
         });
     });
 });
 
 // Create review object for adding
-function createReviewObject(coords, form) {
+function createReviewObject(form, title) {
     const date = new Date();
     const newReview = {};
 
-    newReview.coords = coords;
+    newReview.title = title.textContent;
     newReview.reviews = {
         author: form.elements.name.value,
         date: `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`,
@@ -125,6 +140,7 @@ function clearForm(form) {
 // Add new review to the page
 function addReviewToPage(review) {
     const parent = this._element.querySelector('.card-reviews');
+    const defaultText = this._element.querySelector('#default-text');
     const newReview = document.createElement('div');
     const contentReview = ` 
         <p class="review-head">
@@ -135,5 +151,8 @@ function addReviewToPage(review) {
         <p class="review-body">${review.reviews.text}</p>`;
     newReview.classList.add('card-one-review');
     newReview.innerHTML = contentReview;
+    if (defaultText) {
+        defaultText.remove();
+    }
     parent.appendChild(newReview);
 }
