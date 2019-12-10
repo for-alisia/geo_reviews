@@ -65,7 +65,7 @@ body {
 }
 
 .card-header {
-    height: 15px;
+    min-height: 15px;
     background-color: #ff8353;
     color: #fff;
     display: flex;

@@ -14,6 +14,30 @@ ymaps.ready(function() {
 
     let balloon;
 
+    // Create custom clusterer layout
+    const customClusterContentLayout = ymaps.templateLayoutFactory.createClass(
+        `<h2 class=ballon_header>{{ properties.place|raw }}</h2>
+        <div class=ballon_body></div> 
+        <div class=ballon_footer></div>`
+    );
+
+    // Create clusterer
+    const clusterer = new ymaps.Clusterer({
+        preset: 'islands#invertedVioletClusterIcons',
+        groupByCoordinates: false,
+        clusterDisableClickZoom: true,
+        clusterOpenBalloonOnClick: true,
+        // Set carousel content layout
+        clusterBalloonContentLayout: 'cluster#balloonCarousel',
+        clusterBalloonItemContentLayout: customClusterContentLayout,
+        clusterBalloonPanelMaxMapArea: 0,
+        clusterBalloonContentLayoutWidth: 200,
+        clusterBalloonContentLayoutHeight: 130,
+        clusterBalloonPagerSize: 5
+    });
+
+    mainMap.geoObjects.add(clusterer);
+
     // Create Custom Ballon
     const BalloonContentLayout = ymaps.templateLayoutFactory.createClass(
         layoutTemplate(),
@@ -70,7 +94,7 @@ ymaps.ready(function() {
                         place: title.textContent,
                         reviews: newReview
                     });
-                    mainMap.geoObjects.add(newPoint);
+                    clusterer.add(newPoint);
                 }
             }
         }
@@ -79,6 +103,7 @@ ymaps.ready(function() {
     mainMap.options.set({
         balloonLayout: BalloonContentLayout
     });
+
     //  Open balloon on user's click
     mainMap.events.add('click', e => {
         if (balloon) {
