@@ -181,3 +181,12 @@ function addReviewToPage(review) {
     }
     parent.appendChild(newReview);
 }
+
+/*`<div class="card">
+            <div id="close-balloon"><i class="fas fa-times"></i></div>
+            {% for geoObject in properties.geoObjects %}
+            <div class="card-reviews">
+                <div class="link"><span id="cluster-title">{{geoObject.properties.reviews.title}}</span></div>            
+                <p class="review-body">{{geoObject.properties.reviews.content[0].text}}</p>                   
+            {% endfor %}
+        </div>`*/

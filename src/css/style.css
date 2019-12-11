@@ -1,6 +1,5 @@
 @import '../../node_modules/reset-css/reset.css';
 @import url('https://fonts.googleapis.com/css?family=Fira+Sans&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Fredoka+One&display=swap');
 
 body {
     font-family: 'Fira Sans', sans-serif;
@@ -132,6 +131,12 @@ body {
     width: 100%;
     box-sizing: border-box;
     margin-bottom: 15px;
+    outline: none;
+}
+
+.card-form input:focus,
+.card-form textarea:focus {
+    border: 1px solid #ff8353;
 }
 
 .card-form textarea {
@@ -169,4 +174,117 @@ body {
 .ymaps-2-1-75-balloon__content {
     margin-right: 0 !important;
     padding: 0 !important;
+}
+
+/**********************************/
+
+.cluster-balloon-cont {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    height: 200px;
+    overflow: hidden;
+}
+.cluster-balloon {
+    width: 400px;
+    height: 200px;
+    background-color: #fff;
+    border-radius: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.cluster-container {
+    width: 80%;
+}
+.cluster-card {
+    align-self: flex-start;
+    flex-grow: 2;
+}
+.cluster-title {
+    background-color: #ff8353;
+    border-radius: 10px 10px 0 0;
+    padding: 10px;
+    color: #fff;
+    display: flex;
+    cursor: pointer;
+}
+.cluster-title span {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.arrow {
+    font-size: 22px;
+    color: #ff8353;
+    cursor: pointer;
+    padding: 5px;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    z-index: 100;
+}
+.cluster-card {
+    margin: 20px 10px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.cluster-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.cluster-author {
+    font-weight: 700;
+}
+.cluster-place,
+.cluster-date {
+    opacity: 0.75;
+}
+.cluster-footer {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 10px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 100;
+}
+.car-block {
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #ff8353;
+    padding: 2px;
+    cursor: pointer;
+    box-sizing: border-box;
+    margin: 3px;
+    border-radius: 10px;
+    opacity: 0.75;
+    border: 1px solid #ff8353;
+    line-height: 16px;
+    transition: all 300ms, ease-in-out;
+}
+
+.car-block:hover {
+    background-color: #ff8353;
+    color: #fff;
+}
+
+.car-block.active {
+    background-color: #ff8353;
+    color: #fff;
+}
+
+#close-cluster-balloon {
+    position: absolute;
+    z-index: 100;
+    top: 10px;
+    right: 10px;
+    color: #fff;
+    cursor: pointer;
 }

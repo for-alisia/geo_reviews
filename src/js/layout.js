@@ -10,18 +10,20 @@ function layoutTemplate() {
     </div>
     <div class="card-container">
         <div class="card-reviews">
-
-        <div id="default-text">No reviews</div>
-        {% for review in properties.reviews %}
+        {% if properties.reviews.content == undefined %}
+            <div id="default-text">Отзывов пока нет...</div>
+        {% else %}
+        {% for item in properties.reviews.content %}
             <div class="card-one-review">
                 <p class="review-head">
-                    <span class="review-name">{{review.author}}</span>
-                    <span class="review-place">{{review.place}}</span>
-                    <span class="review-time">{{review.date}}</span>
+                    <span class="review-name">{{item.author}}</span>
+                    <span class="review-place">{{item.place}}</span>
+                    <span class="review-time">{{item.date}}</span>
                 </p>
-                <p class="review-body">{{review.text}}</p>
+                <p class="review-body">{{item.text}}</p>
             </div>
-            {% endfor %}
+        {% endfor %}
+        {% endif %}
         </div>
         <form id="form-review" class="card-form">
             <h3 class="add-review-header">
