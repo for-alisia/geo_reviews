@@ -62,6 +62,7 @@ body {
     background-color: #fff;
     border-radius: 15px;
     position: absolute;
+    min-height: 100px;
 }
 
 .card-header {

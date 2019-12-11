@@ -13,68 +13,27 @@ ymaps.ready(function() {
     });
 
     let balloon;
-    // Create Custom Ballon
-    const BalloonClusterLayout = ymaps.templateLayoutFactory.createClass(
-        `<div class="card">
-            <div id="close-balloon"><i class="fas fa-times"></i></div>
-            {% for geoObject in properties.geoObjects %}
-            <div class="card-reviews">
-                <div class="link"><span id="cluster-title">{{geoObject.properties.reviews.title}}</span></div>            
-                <p class="review-body">{{geoObject.properties.reviews.reviews.text}}</p>                   
-            {% endfor %}
-        </div>`,
-        {
-            // Build a new layout, add eventListeners and set a position
-            build() {
-                BalloonClusterLayout.superclass.build.call(this);
 
-                this._element = this.getParentElement().querySelector('.card');
-
-                this.applyElementOffset();
-                this._element
-                    .querySelector('#close-balloon')
-                    .addEventListener('click', this.onCloseClick.bind(this));
-
-                this._element
-                    .querySelector('#cluster-title')
-                    .addEventListener('click', this.onTitleClick.bind(this));
-            },
-            // Define a position of balloon
-            applyElementOffset: function() {
-                this._element.style.left = 20 + 'px';
-                this._element.style.top =
-                    -(this._element.offsetHeight / 2) - 50 + 'px';
-            },
-            // Clear all events after ballooon closed
-            clear() {
-                this._element
-                    .querySelector('#close-balloon')
-                    .removeEventListener('click', this.onCloseClick);
-                BalloonClusterLayout.superclass.clear.call(this);
-            },
-            // Close balloon
-            onCloseClick: function(e) {
-                e.preventDefault();
-                this.events.fire('userclose');
-            },
-
-            // Create balloon with all reviews by title
-            onTitleClick: function(e) {
-                this.events.fire('userclose');
-                balloon = mainMap.balloon.open(mainMap.getCenter(), {
-                    properties: { reviews: { title: 'testData' } }
-                });
-            }
-        }
+    // Create custom clusterer layout
+    const customClusterContentLayout = ymaps.templateLayoutFactory.createClass(
+        `<h2 class=ballon_header>{{ properties.place|raw }}</h2>
+        <div class=ballon_body></div> 
+        <div class=ballon_footer></div>`
     );
 
     // Create clusterer
     const clusterer = new ymaps.Clusterer({
         preset: 'islands#invertedVioletClusterIcons',
+        groupByCoordinates: false,
         clusterDisableClickZoom: true,
         clusterOpenBalloonOnClick: true,
-        clusterBalloonLayout: BalloonClusterLayout,
-        hideIconOnBalloonOpen: false
+        // Set carousel content layout
+        clusterBalloonContentLayout: 'cluster#balloonCarousel',
+        //clusterBalloonContentLayout: customClusterContentLayout,
+        clusterBalloonPanelMaxMapArea: 0,
+        clusterBalloonContentLayoutWidth: 200,
+        clusterBalloonContentLayoutHeight: 130,
+        clusterBalloonPagerSize: 5
     });
 
     mainMap.geoObjects.add(clusterer);
@@ -123,28 +82,19 @@ ymaps.ready(function() {
             addReview: function(e) {
                 e.preventDefault();
                 const form = this._element.querySelector('#form-review');
-                const currentCoords =
-                    this.getData().coords ||
-                    this.getData().geoObject.geometry._coordinates;
+                const currentCoords = this.getData().coords;
                 const title = this._element.querySelector('#address');
-                //console.log(currentCoords);
+                let newPoint = null;
 
                 if (validation(form)) {
                     const newReview = createReviewObject(form, title);
-                    //console.log(newReview);
                     addReviewToPage.call(this, newReview);
                     clearForm(form);
-                    const newPoint = new ymaps.Placemark(
-                        currentCoords,
-                        {
-                            reviews: newReview
-                        },
-                        {
-                            hideIconOnBalloonOpen: false
-                        }
-                    );
+                    newPoint = new ymaps.Placemark(currentCoords, {
+                        place: title.textContent,
+                        reviews: newReview
+                    });
                     clusterer.add(newPoint);
-                    console.log(clusterer);
                 }
             }
         }
@@ -167,10 +117,7 @@ ymaps.ready(function() {
             const address = res.geoObjects.get(0).properties._data.text;
             balloon = new ymaps.Balloon(mainMap);
             balloon.options.setParent(mainMap.options);
-            balloon.setData({
-                properties: { reviews: { title: address } },
-                coords: coords
-            });
+            balloon.setData({ properties: { place: address }, coords: coords });
             balloon.open(coords);
         });
     });

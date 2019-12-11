@@ -4,13 +4,13 @@ function layoutTemplate() {
     <div class="card-header">
         <div class="card-info">
             <i class="fas fa-map-marker-alt"></i>
-            <span id="address" class="card-info">{{properties.place}}</span>
+            <span id="address" class="card-info">{{properties.reviews.title}}</span>
         </div>
         <div id="close-balloon"><i class="fas fa-times"></i></div>
     </div>
     <div class="card-container">
         <div class="card-reviews">
-        
+
         <div id="default-text">No reviews</div>
         {% for review in properties.reviews %}
             <div class="card-one-review">
