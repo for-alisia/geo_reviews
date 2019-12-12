@@ -5,6 +5,7 @@ function createCustomBalloonLayout(clusterer) {
     const customBalloonLayout = ymaps.templateLayoutFactory.createClass(
         layoutTemplate(),
         {
+            // Create balloon, add listeners, set position of the balloon
             build() {
                 customBalloonLayout.superclass.build.call(this);
 
@@ -18,7 +19,7 @@ function createCustomBalloonLayout(clusterer) {
 
                 addBtn.addEventListener('click', this.addReview.bind(this));
             },
-
+            // Position of the balloon (a litle bit left and top, then a point)
             applyElementOffset: function() {
                 this._element.style.left = 20 + 'px';
                 this._element.style.top =
@@ -44,11 +45,12 @@ function createCustomBalloonLayout(clusterer) {
             addReview: function(e) {
                 e.preventDefault();
                 const form = this._element.querySelector('#form-review');
+                // we can work with 2 diffrent objects (placemark's balloon and map's balloon), so we need different methods to get coords
                 const currentCoords =
                     this.getData().coords ||
                     this.getData().geoObject.geometry._coordinates;
                 const title = this._element.querySelector('#address');
-
+                // if new review contains data, add it to the map and to the storage
                 if (validation(form)) {
                     const newReview = createReviewObject(form, title);
                     addReviewToPage.call(this, newReview);

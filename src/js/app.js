@@ -8,6 +8,7 @@ import createCustomClusterLayout from './customClusterLayout';
 import dataStorage from './storage';
 
 ymaps.ready(function() {
+    // Create the map (center of the map is in Perm)
     const mainMap = new ymaps.Map('map', {
         center: [57.980872, 56.240547],
         zoom: 12,
@@ -15,6 +16,7 @@ ymaps.ready(function() {
     });
     let balloon;
     const customClusterLayout = createCustomClusterLayout(mainMap, balloon);
+    // Create cluster with custom layout
     const clusterer = new ymaps.Clusterer({
         preset: 'islands#invertedVioletClusterIcons',
         clusterDisableClickZoom: true,
@@ -28,7 +30,7 @@ ymaps.ready(function() {
     mainMap.options.set({
         balloonLayout: customBalloonLayout
     });
-
+    // Add points from the localStorage to the map
     dataStorage.reviews.forEach(review => {
         const geocoder = ymaps.geocode(review.title);
 
@@ -46,7 +48,7 @@ ymaps.ready(function() {
             clusterer.add(newPoint);
         });
     });
-
+    // Open new balloon on click
     mainMap.events.add('click', e => {
         if (balloon) {
             balloon.close();

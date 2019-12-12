@@ -51,7 +51,7 @@ function createCustomClusterLayout(map, balloon) {
                 this.events.fire('userclose');
             },
 
-            // Create balloon with all reviews by title
+            // Create balloon with all reviews by click on the title
             onTitleClick: function(e) {
                 const title = e.target.textContent;
                 this.events.fire('userclose');
@@ -61,7 +61,7 @@ function createCustomClusterLayout(map, balloon) {
                 });
             },
 
-            // Create carousel layout
+            // Create tabs layout for the reviews
             createCarousel: function() {
                 const qty = [
                     ...this._element.querySelectorAll('.cluster-balloon')
@@ -88,7 +88,7 @@ function createCustomClusterLayout(map, balloon) {
 
                 container.appendChild(fragment);
             },
-
+            // Change the review by the click on it's number
             onChangeReview: function(e) {
                 if (e.target.classList.contains('car-block')) {
                     const currentElem = e.target;

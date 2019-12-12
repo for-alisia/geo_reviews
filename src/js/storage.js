@@ -1,6 +1,7 @@
 class DataStorage {
     constructor() {
         this.reviews = [];
+        // add data from localStorage
         this.init();
     }
 
@@ -12,11 +13,13 @@ class DataStorage {
     }
 
     addData(review) {
+        // Add new review fnd refresh the localStorage data
         this.reviews.push(review);
         this.saveDataInStorage();
     }
 
     getDataByTitle(title) {
+        // Create object with all reviews by address (to put it into balloon then)
         const res = {};
         res.title = title;
         res.content = [];
