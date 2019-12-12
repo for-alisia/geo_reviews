@@ -3,7 +3,7 @@ const layoutCluster = `
 <div id="close-cluster-balloon"><i class="fas fa-times"></i></div>
 {% for geoObject in properties.geoObjects %}
 <div class="cluster-balloon">
-    <div class="cluster-title" id="cluster-title">
+    <div class="cluster-title">
         <i class="fas fa-map-marker-alt"></i>
         <span>{{geoObject.properties.reviews.title}}</span>
         

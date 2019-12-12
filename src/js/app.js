@@ -5,6 +5,7 @@ import '../img/logo.png';
 import '../img/logo_white.png';
 import createCustomBalloonLayout from './customBalloonLayout';
 import createCustomClusterLayout from './customClusterLayout';
+import dataStorage from './storage';
 
 ymaps.ready(function() {
     const mainMap = new ymaps.Map('map', {
@@ -27,6 +28,25 @@ ymaps.ready(function() {
     mainMap.options.set({
         balloonLayout: customBalloonLayout
     });
+
+    dataStorage.reviews.forEach(review => {
+        const geocoder = ymaps.geocode(review.title);
+
+        geocoder.then(res => {
+            const coords = res.geoObjects.get(0).geometry.getCoordinates();
+            const newPoint = new ymaps.Placemark(
+                coords,
+                {
+                    reviews: review
+                },
+                {
+                    hideIconOnBalloonOpen: false
+                }
+            );
+            clusterer.add(newPoint);
+        });
+    });
+
     mainMap.events.add('click', e => {
         if (balloon) {
             balloon.close();

@@ -1,4 +1,5 @@
 import layoutTemplate from './layout';
+import dataStorage from './storage';
 
 function createCustomBalloonLayout(clusterer) {
     const customBalloonLayout = ymaps.templateLayoutFactory.createClass(
@@ -62,6 +63,7 @@ function createCustomBalloonLayout(clusterer) {
                         }
                     );
                     clusterer.add(newPoint);
+                    dataStorage.addData(newReview);
                 }
             }
         }

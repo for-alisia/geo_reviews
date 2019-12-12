@@ -1,4 +1,5 @@
 import layoutCluster from './layoutCluster';
+import dataStorage from './storage';
 
 function createCustomClusterLayout(map, balloon) {
     const customClusterLayout = ymaps.templateLayoutFactory.createClass(
@@ -18,9 +19,15 @@ function createCustomClusterLayout(map, balloon) {
                     .querySelector('#close-cluster-balloon')
                     .addEventListener('click', this.onCloseClick.bind(this));
 
-                this._element
-                    .querySelector('#cluster-title')
-                    .addEventListener('click', this.onTitleClick.bind(this));
+                for (let titleBlock of this._element.querySelectorAll(
+                    '.cluster-title'
+                )) {
+                    titleBlock.addEventListener(
+                        'click',
+                        this.onTitleClick.bind(this)
+                    );
+                }
+
                 this._element
                     .querySelector('.cluster-footer')
                     .addEventListener('click', this.onChangeReview.bind(this));
@@ -46,9 +53,11 @@ function createCustomClusterLayout(map, balloon) {
 
             // Create balloon with all reviews by title
             onTitleClick: function(e) {
+                const title = e.target.textContent;
                 this.events.fire('userclose');
+                const allReviewsByTitle = dataStorage.getDataByTitle(title);
                 balloon = map.balloon.open(map.getCenter(), {
-                    properties: { reviews: { title: 'testData' } }
+                    properties: { reviews: allReviewsByTitle }
                 });
             },
 
@@ -58,11 +67,12 @@ function createCustomClusterLayout(map, balloon) {
                     ...this._element.querySelectorAll('.cluster-balloon')
                 ].length;
                 const fragment = document.createDocumentFragment();
+                const firstElem = this._element.querySelector(
+                    '.cluster-balloon'
+                );
                 const container = this._element.querySelector(
                     '.cluster-footer'
                 );
-
-                console.log(qty);
 
                 for (let i = 0; i < qty; i++) {
                     const block = document.createElement('div');
@@ -72,29 +82,34 @@ function createCustomClusterLayout(map, balloon) {
                         block.classList.add('active');
                     }
                     fragment.appendChild(block);
-                    console.log(i);
                 }
+
+                firstElem.style.zIndex = 10;
 
                 container.appendChild(fragment);
             },
 
             onChangeReview: function(e) {
-                const currentElem = e.target;
-                const allElem = [
-                    ...this._element.querySelectorAll('.car-block')
-                ];
-                const index = allElem.findIndex(item => item == currentElem);
-                const reviews = [
-                    ...this._element.querySelectorAll('.cluster-balloon')
-                ];
-                allElem.forEach(elem => {
-                    elem.classList.remove('active');
-                });
-                reviews.forEach(review => {
-                    review.style.zIndex = 1;
-                });
-                reviews[index].style.zIndex = 10;
-                currentElem.classList.add('active');
+                if (e.target.classList.contains('car-block')) {
+                    const currentElem = e.target;
+                    const allElem = [
+                        ...this._element.querySelectorAll('.car-block')
+                    ];
+                    const index = allElem.findIndex(
+                        item => item == currentElem
+                    );
+                    const reviews = [
+                        ...this._element.querySelectorAll('.cluster-balloon')
+                    ];
+                    allElem.forEach(elem => {
+                        elem.classList.remove('active');
+                    });
+                    reviews.forEach(review => {
+                        review.style.zIndex = 1;
+                    });
+                    reviews[index].style.zIndex = 10;
+                    currentElem.classList.add('active');
+                }
             }
         }
     );
