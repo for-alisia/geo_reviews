@@ -56,8 +56,13 @@ function createCustomClusterLayout(map, balloon) {
                 const title = e.target.textContent;
                 this.events.fire('userclose');
                 const allReviewsByTitle = dataStorage.getDataByTitle(title);
-                balloon = map.balloon.open(map.getCenter(), {
-                    properties: { reviews: allReviewsByTitle }
+                ymaps.geocode(title, { results: 1 }).then(res => {
+                    const coords = res.geoObjects
+                        .get(0)
+                        .geometry.getCoordinates();
+                    balloon = map.balloon.open(coords, {
+                        properties: { reviews: allReviewsByTitle }
+                    });
                 });
             },
 

@@ -45,26 +45,30 @@ function createCustomBalloonLayout(clusterer) {
             addReview: function(e) {
                 e.preventDefault();
                 const form = this._element.querySelector('#form-review');
-                // we can work with 2 diffrent objects (placemark's balloon and map's balloon), so we need different methods to get coords
-                const currentCoords =
-                    this.getData().coords ||
-                    this.getData().geoObject.geometry._coordinates;
                 const title = this._element.querySelector('#address');
+
                 // if new review contains data, add it to the map and to the storage
                 if (validation(form)) {
                     const newReview = createReviewObject(form, title);
                     addReviewToPage.call(this, newReview);
                     clearForm(form);
-                    const newPoint = new ymaps.Placemark(
-                        currentCoords,
-                        {
-                            reviews: newReview
-                        },
-                        {
-                            hideIconOnBalloonOpen: false
-                        }
-                    );
-                    clusterer.add(newPoint);
+
+                    ymaps.geocode(title.textContent).then(res => {
+                        const currentCoords = res.geoObjects
+                            .get(0)
+                            .geometry.getCoordinates();
+                        const newPoint = new ymaps.Placemark(
+                            currentCoords,
+                            {
+                                reviews: newReview
+                            },
+                            {
+                                hideIconOnBalloonOpen: false
+                            }
+                        );
+                        clusterer.add(newPoint);
+                    });
+
                     dataStorage.addData(newReview);
                 }
             }

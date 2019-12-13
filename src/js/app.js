@@ -22,7 +22,8 @@ ymaps.ready(function() {
         clusterDisableClickZoom: true,
         clusterOpenBalloonOnClick: true,
         clusterBalloonLayout: customClusterLayout,
-        hideIconOnBalloonOpen: false
+        hideIconOnBalloonOpen: false,
+        gridSize: 120
     });
     const customBalloonLayout = createCustomBalloonLayout(clusterer);
 
