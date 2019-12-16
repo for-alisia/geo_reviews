@@ -16,6 +16,7 @@ const layoutCluster = `
                 <div class="cluster-date">{{geoObject.properties.reviews.content[0].date}}</div>
             </div>
             <div class="cluster-text">{{geoObject.properties.reviews.content[0].text}}</div>
+            <div class="btn-cont"><button class="btn">Добавить отзыв</button></div>
         </div>        
     </div>    
 </div>

@@ -144,7 +144,8 @@ body {
     resize: none;
 }
 
-.card-form button {
+.card-form button,
+.btn {
     background-color: #ff8353;
     border-radius: 10px;
     padding: 10px 17px;
@@ -183,12 +184,12 @@ body {
     top: 50%;
     left: 50%;
     width: 400px;
-    height: 200px;
+    min-height: 350px;
     overflow: hidden;
 }
 .cluster-balloon {
     width: 400px;
-    height: 200px;
+    height: 350px;
     background-color: #fff;
     border-radius: 10px;
     position: absolute;
@@ -196,11 +197,21 @@ body {
     left: 0;
 }
 .cluster-container {
-    width: 80%;
+    width: 100%;
+}
+.cluster-text {
+}
+.btn-cont {
+    margin-top: 20px;
+    margin-bottom: 40px;
 }
 .cluster-card {
     align-self: flex-start;
     flex-grow: 2;
+    position: relative;
+    max-height: 280px;
+    overflow: auto;
+    padding-bottom: 36px;
 }
 .cluster-title {
     background-color: #ff8353;
@@ -233,18 +244,21 @@ body {
 
 .cluster-header {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
-    margin-bottom: 10px;
 }
 .cluster-author {
     font-weight: 700;
+    margin-bottom: 10px;
 }
 .cluster-place,
 .cluster-date {
     opacity: 0.75;
+    margin-bottom: 10px;
 }
 .cluster-footer {
     display: flex;
+    width: 100%;
     justify-content: center;
     padding-bottom: 10px;
     position: absolute;
@@ -252,6 +266,8 @@ body {
     left: 50%;
     transform: translate(-50%);
     z-index: 100;
+    background-color: #fff;
+    border-radius: 10px;
 }
 .car-block {
     width: 20px;

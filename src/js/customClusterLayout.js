@@ -28,6 +28,10 @@ function createCustomClusterLayout(map, balloon) {
                     );
                 }
 
+                for (let btn of this._element.querySelectorAll('.btn')) {
+                    btn.addEventListener('click', this.onTitleClick.bind(this));
+                }
+
                 this._element
                     .querySelector('.cluster-footer')
                     .addEventListener('click', this.onChangeReview.bind(this));
@@ -53,13 +57,23 @@ function createCustomClusterLayout(map, balloon) {
 
             // Create balloon with all reviews by click on the title
             onTitleClick: function(e) {
-                const title = e.target.textContent;
+                let title;
+                if (e.target.classList.contains('btn')) {
+                    title = e.target
+                        .closest('.cluster-balloon')
+                        .querySelector('.cluster-title')
+                        .textContent.trim('');
+                } else {
+                    title = e.target.textContent;
+                }
+
                 this.events.fire('userclose');
                 const allReviewsByTitle = dataStorage.getDataByTitle(title);
                 ymaps.geocode(title, { results: 1 }).then(res => {
                     const coords = res.geoObjects
                         .get(0)
                         .geometry.getCoordinates();
+                    console.log(allReviewsByTitle);
                     balloon = map.balloon.open(coords, {
                         properties: { reviews: allReviewsByTitle }
                     });
