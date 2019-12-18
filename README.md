@@ -4,3 +4,5 @@
 2. cd geo_review
 3. npm i
 4. npm run dev
+
+!(https://github.com/for-alisia/geo_reviews/blob/custom/src/img/Screenshot_1.jpg)
